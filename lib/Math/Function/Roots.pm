@@ -5,7 +5,7 @@ use vars qw(@EXPORT_OK $E $Max_Iter $VERSION $Last_Iter);
 use warnings;
 use strict;
 use Carp;
-use Getopt::GetArgs;
+
 
 =head1 NAME
 
@@ -13,11 +13,11 @@ Math::Function::Roots - Functions for finding roots of arbitrary functions
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-$VERSION = '0.03';
+$VERSION = '0.04';
 
 =head1 SYNOPSIS
 
