@@ -6,18 +6,17 @@ use warnings;
 use strict;
 use Carp;
 
-
 =head1 NAME
 
 Math::Function::Roots - Functions for finding roots of arbitrary functions
 
 =head1 VERSION
 
-Version 0.04
+Version 0.05
 
 =cut
 
-$VERSION = '0.04';
+$VERSION = '0.05';
 
 =head1 SYNOPSIS
 
@@ -78,12 +77,12 @@ Often you will have a function of multiple variables. This can be done with a wr
        return $x1**2 + $x2**2;
     }
 
-    my $wrapper = sub {
+    sub wrapper{
        my $x2 = shift;
        return foo( 5, $x2 );
     }
 
-    my $result = bisection( $wrapper, -10, 10 );
+    my $result = bisection( \&wrapper, -10, 10 );
 
 Whatever subroutine is passed, it will be called with one argument,
 and is expected to return a single result. Functions not fitting that
@@ -194,6 +193,7 @@ avoided.
 		fixed_point 
 		secant
 		false_position
+		find
 		);
 
 =head2 bisection( I<function, min, max> )
@@ -361,10 +361,10 @@ sub secant(&$$;%){
 
 =head2 false_position( I<function, min, max> )
 
-False Position is an algorithm similar to Secant, it uses secants of
-the function to pick better guesses. The difference is that this
+False Position is an algorithm similar to Secant, it uses secants
+of the function to pick better guesses. The difference is that this
 method incorporates the bracketing of the Bisection method, with the
-speed of the Secant method. 
+speed of the Secant method.
 
 Bracketing is a desirable property because it makes the algorithm more
 dependable. Bracketing ensures that the algorithm will stay within the
@@ -392,15 +392,15 @@ sub false_position(&$$;%){
     croak "Bad range: f($a) and f($b) have the same sign" 
 	if( $ay * $by > 0 );
 
-    my $p = 0;
+    my ($p,$last_py) = (0,0);
     for (1..$Max_Iter){
 	$Last_Iter = $_;
 	
 	$p = $b - $by*($b - $a)/($by - $ay);
-
+	
 	my $py = &$f($p);
-
-	if( $py == 0 || abs( $a - $b ) < $E ){
+	
+	if( abs($py - $last_py) <= $E ){
 	    return $p;
 	}
 	elsif( $py * $by < 0 ){
@@ -414,14 +414,89 @@ sub false_position(&$$;%){
 	    $b = $p;
 	    $by = $py;
 	}
+	$last_py = $py;
     }
     carp "Maximum iterations: possible bad solution";
     return $p;
 }
+
+=head2 find()
+
+This a hybrid function which uses a combination of algorithms to find
+the root of the given function. Both I<guess1> and I<guess2> are
+optional. If one is provided, it is used as an approximate starting
+point. If both are given, then they are taken as a range, the root
+B<must> be within this range.
+
+It will most likely return the root nearest your guess, but no
+guarantees. Don't provide a range with more than one root in it, you
+might find one, you might not. More information will give higher
+performance and more control over which root is being found, but if
+you don't know anything about the function, give it a try without a
+guess. Settings from epsilon and maximum iterations apply as normal.
+
+=cut
+
+sub find(&;$$%){
+    my $f = shift;
+    my ($a,$b);
+
+    # This is totally wrong, need to not assign to $a and $b when no 
+    # arguments
+
+    if( defined $_[0] && $_[0] =~ !/epsilon|max_iter/ ){ 
+	$a = shift;
+    }
+    unless( not @_ and $_[0] =~/epsilon|max_iter/ ){ 
+	$b = shift;
+    }	
+
+    my %optional = @_;
+    my $E =  $optional{epsilon} || $E;
+    my $Max_Iter = $optional{max_iter} || $Max_Iter;  
+
+    unless( defined $b ){
+	# If we don't have $b, we don't have a range, 
+	# but we might have a guess
+	unless( defined $a ){
+	    # If we have no guess we'll use 0 for initiation
+	    $a = 0;
+	}
+	# Start with a guess range +2 and -2 around guess
+	$a -= 2; 
+	$b = $a + 4;
+	my ($fa,$fb);
+	do{
+
+	    # add max iteration catch to this loop
+	    # irr call to this function is causing both points to go negative
+
+	    # Until $a and $b bracket the solution
+	    $fa = &$f($a);
+	    $fb = &$f($b);
+	    sleep 1;
+	    use Data::Dumper::Simple;
+	    warn Dumper($a,$fa,$b,$fb ); 
+	    $a = $a*2;
+	    $b = $b*2;
+	}until( $fa * $fb < 0 );
+    }
+    # Now we have a possibly large range that must bracket the solution
+    # It might also bracket an odd number of roots,
+    # in this case, we don't know which one we might find,
+    # and if the user cares, he should have given more info
+
+
+    my ($approx,$result);
+    eval{
+	$approx = bisection( \&$f, $a, $b, epsilon => .1 );
+    } || die "find: Initial bisection approximation failed: ".$@;
+    eval{
+	$result = false_position( \&$f, $approx - .1, $approx + .1 );
+    } || die "find: false_position refinement failed: ".$@;
+    return $result;
+}
 	
-	    
-	    
-    
 
 =head1 FUTURE IMPROVEMENTS
 

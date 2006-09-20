@@ -1,7 +1,7 @@
 Revision history for Math-Function-Roots
 
-0.01    Date/time
+0.01    Feb 20th, 2005
         First version, released on an unsuspecting world.
 
-0.04	Sept 20, 2006
-	Tweaks to dist files to clean up testing.
+0.04	Feb 25th, 2005
+	Corrected documentation on how sub references may be passed
