@@ -12,11 +12,11 @@ Math::Function::Roots - Functions for finding roots of arbitrary functions
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-$VERSION = '0.05';
+$VERSION = '0.06';
 
 =head1 SYNOPSIS
 
@@ -516,6 +516,8 @@ Finish of test coverage.
 Spencer Ogden, C<< <spencer@spencerogden.com> >>
 
 =head1 BUGS
+
+The find function is broken
 
 Please report any bugs or feature requests to
 C<bug-algorithm-bisection@rt.cpan.org>, or through the web interface

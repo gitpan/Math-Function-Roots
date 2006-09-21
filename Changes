@@ -5,3 +5,6 @@ Revision history for Math-Function-Roots
 
 0.04	Feb 25th, 2005
 	Corrected documentation on how sub references may be passed
+
+0.06    Sep 21th, 2006
+	Included additional testing of the algorithms.
