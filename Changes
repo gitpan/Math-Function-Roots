@@ -8,3 +8,6 @@ Revision history for Math-Function-Roots
 
 0.06    Sep 21th, 2006
 	Included additional testing of the algorithms.
+
+0.061	March 25th, 2008
+	Clean up test code to prevent CPAN smoke test errors.
