@@ -12,11 +12,11 @@ Math::Function::Roots - Functions for finding roots of arbitrary functions
 
 =head1 VERSION
 
-Version 0.061
+Version 0.062
 
 =cut
 
-$VERSION = '0.061';
+$VERSION = '0.062';
 
 =head1 SYNOPSIS
 
@@ -475,8 +475,8 @@ sub find(&;$$%){
 	    $fa = &$f($a);
 	    $fb = &$f($b);
 	    sleep 1;
-	    use Data::Dumper::Simple;
-	    warn Dumper($a,$fa,$b,$fb ); 
+	    #use Data::Dumper::Simple;
+	    #warn Dumper($a,$fa,$b,$fb ); 
 	    $a = $a*2;
 	    $b = $b*2;
 	}until( $fa * $fb < 0 );
