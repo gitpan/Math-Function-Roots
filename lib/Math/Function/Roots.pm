@@ -12,11 +12,11 @@ Math::Function::Roots - Functions for finding roots of arbitrary functions
 
 =head1 VERSION
 
-Version 0.062
+Version 0.063
 
 =cut
 
-$VERSION = '0.062';
+$VERSION = '0.063';
 
 =head1 SYNOPSIS
 
@@ -447,7 +447,7 @@ sub find(&;$$%){
     if( defined $_[0] && $_[0] =~ !/epsilon|max_iter/ ){ 
 	$a = shift;
     }
-    unless( not @_ and $_[0] =~/epsilon|max_iter/ ){ 
+    if( defined $_[0] && $_[0] =~ !/epsilon|max_iter/ ){ 
 	$b = shift;
     }	
 
