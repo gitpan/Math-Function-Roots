@@ -15,7 +15,7 @@ epsilon( -1 );
 is( epsilon(), 0, "epsilon: minimum" );
 
 ok( bisection( sub{ shift() + 1 }, -5, 10 ) eq -1, "bisection: linear equation" );
-is( last_iter(), 54 );
+# is( last_iter(), 54 ); # Unkown depending on architecture
 # Root of f(x) = x+1 should be -1 
 
 ok( bisection( sub{ my $x = shift; $x**2 - 25}, -10, -1 ) eq -5, "bisection: negative root of x**2-25");
