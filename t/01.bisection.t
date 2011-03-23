@@ -3,7 +3,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 14;
+use Test::More tests => 13;
 
 use lib 'lib';
 use Math::Function::Roots qw(bisection epsilon last_iter max_iter);

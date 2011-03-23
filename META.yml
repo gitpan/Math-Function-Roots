@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:               Math-Function-Roots
-version:            0.064
+version:            0.065
 abstract:           Functions for finding roots of arbitrary functions
 author:
     - Spencer Ogden <spencer@spencerogden.com>

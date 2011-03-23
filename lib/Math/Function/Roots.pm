@@ -12,11 +12,11 @@ Math::Function::Roots - Functions for finding roots of arbitrary functions
 
 =head1 VERSION
 
-Version 0.063
+Version 0.065
 
 =cut
 
-$VERSION = '0.064';
+$VERSION = '0.065';
 
 =head1 SYNOPSIS
 
